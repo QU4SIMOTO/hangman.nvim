@@ -5,12 +5,12 @@ function HangmanWord:new(settings)
   return setmetatable({
     win = nil,
     buf = nil,
-    settings = settings
+    settings = settings,
   }, self)
 end
 
 function HangmanWord:render(game)
-  vim.api.nvim_set_option_value("modifiable", true, { buf = self.buf, })
+  vim.api.nvim_set_option_value("modifiable", true, { buf = self.buf })
   local chars = vim.tbl_map(function(c)
     if game.guessed[c] then
       return c
@@ -21,14 +21,15 @@ function HangmanWord:render(game)
   local offset = string.len(game.word)
   local line = string.rep(" ", offset) .. vim.iter(chars):join(" ")
   vim.api.nvim_buf_set_lines(self.buf, 0, 1, false, { line })
-  vim.api.nvim_set_option_value("modifiable", false, { buf = self.buf, })
+  vim.api.nvim_set_option_value("modifiable", false, { buf = self.buf })
 end
 
 function HangmanWord:create_window(game, col, row)
   self.buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_set_option_value("filetype", "hangman", { buf = self.buf })
   self:render(game)
-  local window_config = vim.tbl_extend("force", self.settings.win, { col = col, row = row })
+  local window_config =
+    vim.tbl_extend("force", self.settings.win, { col = col, row = row })
   self.win = vim.api.nvim_open_win(self.buf, false, window_config)
 end
 

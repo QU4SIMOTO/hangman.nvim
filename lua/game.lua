@@ -23,7 +23,7 @@ function HangmanGame:new(settings)
     pattern = "hangman",
     callback = function(e)
       game:guess(e.data.guess)
-    end
+    end,
   })
   return game
 end
@@ -32,10 +32,9 @@ function HangmanGame:guess(guess)
   if self.guessed[guess] ~= nil or self.state ~= states.running then
     return
   end
-  local is_correct =
-      vim.iter(vim.split(self.word, ""))
-      :find(function(c) return c == guess end)
-      ~= nil
+  local is_correct = vim.iter(vim.split(self.word, "")):find(function(c)
+    return c == guess
+  end) ~= nil
 
   self.guessed[guess] = is_correct
 
@@ -47,7 +46,7 @@ function HangmanGame:guess(guess)
 
   vim.api.nvim_exec_autocmds(auto.event, {
     group = auto.augroups.game_update,
-    pattern = "hangman"
+    pattern = "hangman",
   })
 end
 
@@ -61,11 +60,11 @@ function HangmanGame:update_state()
     print("You lost")
   end
 
-  local is_complete =
-      vim.iter(vim.split(self.word, ""))
-      :fold(true, function(acc, curr)
-        return acc and self.guessed[curr] == true
-      end)
+  local is_complete = vim
+    .iter(vim.split(self.word, ""))
+    :fold(true, function(acc, curr)
+      return acc and self.guessed[curr] == true
+    end)
 
   if is_complete then
     self.state = states.won

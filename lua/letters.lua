@@ -8,12 +8,12 @@ function HangmanLetters:new(settings)
     win = nil,
     buf = nil,
     ns = vim.api.nvim_create_namespace("hangmanLetters"),
-    settings = settings
+    settings = settings,
   }, self)
 end
 
 function HangmanLetters:render(game)
-  vim.api.nvim_set_option_value("modifiable", true, { buf = self.buf, })
+  vim.api.nvim_set_option_value("modifiable", true, { buf = self.buf })
   local lines = {
     "A B C D E F G H I J K L M",
     "N O P Q R S T U V W X Y Z",
@@ -22,11 +22,18 @@ function HangmanLetters:render(game)
   for i, line in ipairs(lines) do
     for j, c in ipairs(vim.split(line, "")) do
       if game.guessed[c] ~= nil then
-        vim.api.nvim_buf_add_highlight(self.buf, self.ns, "NonText", i - 1, j - 1, j)
+        vim.api.nvim_buf_add_highlight(
+          self.buf,
+          self.ns,
+          "NonText",
+          i - 1,
+          j - 1,
+          j
+        )
       end
     end
   end
-  vim.api.nvim_set_option_value("modifiable", false, { buf = self.buf, })
+  vim.api.nvim_set_option_value("modifiable", false, { buf = self.buf })
 end
 
 function HangmanLetters:create_window(game, col, row)
@@ -34,7 +41,8 @@ function HangmanLetters:create_window(game, col, row)
   vim.api.nvim_set_option_value("filetype", "hangman", { buf = self.buf })
   self:render(game)
 
-  local window_config = vim.tbl_extend("force", self.settings.win, { col = col, row = row })
+  local window_config =
+    vim.tbl_extend("force", self.settings.win, { col = col, row = row })
   self.win = vim.api.nvim_open_win(self.buf, true, window_config)
 
   vim.keymap.set("n", "<CR>", function()
@@ -42,10 +50,10 @@ function HangmanLetters:create_window(game, col, row)
   end, { buffer = self.buf })
 end
 
-
 function HangmanLetters:selection()
   local pos = vim.api.nvim_win_get_cursor(self.win)
-  local line = vim.api.nvim_buf_get_lines(self.buf, pos[1] - 1, pos[1], false)[1]
+  local line =
+    vim.api.nvim_buf_get_lines(self.buf, pos[1] - 1, pos[1], false)[1]
   local c = string.sub(line, pos[2] + 1, pos[2] + 1)
 
   if c == " " then
@@ -55,7 +63,7 @@ function HangmanLetters:selection()
   vim.api.nvim_exec_autocmds(auto.event, {
     group = auto.augroups.guess,
     pattern = "hangman",
-    data = { guess = c }
+    data = { guess = c },
   })
 end
 

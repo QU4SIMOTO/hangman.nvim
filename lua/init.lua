@@ -11,7 +11,7 @@ Hangman.__index = Hangman
 function Hangman:new()
   return setmetatable({
     game = Game:new({
-      word = "HANGMAN"
+      word = "HANGMAN",
     }),
     ui = Ui:new({
       relative = "editor",
@@ -39,4 +39,3 @@ end, {})
 vim.keymap.set("n", "<leader>t", function()
   hangman:toggleUI()
 end)
-

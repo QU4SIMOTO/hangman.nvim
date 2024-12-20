@@ -36,7 +36,7 @@ function HangmanUI:new(settings)
         style = "minimal",
         border = "rounded",
         zindex = 200,
-      }
+      },
     }),
     letters = Letters:new({
       win = {
@@ -46,7 +46,7 @@ function HangmanUI:new(settings)
         style = "minimal",
         border = "rounded",
         zindex = 200,
-      }
+      },
     }),
   }, self)
 end
@@ -77,9 +77,13 @@ function HangmanUI:create_window(game)
   local row = math.floor((vim.o.lines - self.settings.height) / 2)
 
   self.wrapper.buf = self.wrapper.buf or vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_set_option_value("filetype", "hangman", { buf = self.wrapper.buf })
+  vim.api.nvim_set_option_value(
+    "filetype",
+    "hangman",
+    { buf = self.wrapper.buf }
+  )
 
-  vim.api.nvim_set_option_value("modifiable", false, { buf = self.wrapper.buf, })
+  vim.api.nvim_set_option_value("modifiable", false, { buf = self.wrapper.buf })
   local win_config = vim.tbl_extend("force", self.settings, {
     col = col,
     row = row,
@@ -96,7 +100,7 @@ function HangmanUI:create_window(game)
     pattern = "hangman",
     callback = function()
       self:update(game)
-    end
+    end,
   })
 end
 
