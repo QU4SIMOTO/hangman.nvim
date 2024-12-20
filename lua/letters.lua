@@ -52,12 +52,11 @@ function HangmanLetters:create_window(game, col, row)
   vim.api.nvim_create_autocmd("BufLeave", {
     buffer = self.buf,
     callback = function()
-      vim.api.nvim_exec_autocmds(auto.event, {
+      vim.api.nvim_exec_autocmds("User", {
         group = auto.augroups.ui,
         pattern = "hangman",
         data = "close",
       })
-      print("buffer left")
     end,
   })
 end
@@ -72,7 +71,7 @@ function HangmanLetters:selection()
     return
   end
 
-  vim.api.nvim_exec_autocmds(auto.event, {
+  vim.api.nvim_exec_autocmds("User", {
     group = auto.augroups.guess,
     pattern = "hangman",
     data = { guess = c },

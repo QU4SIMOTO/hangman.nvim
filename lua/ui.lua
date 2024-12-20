@@ -1,3 +1,4 @@
+-- TODO remove these
 package.loaded["guy"] = nil
 package.loaded["word"] = nil
 package.loaded["letters"] = nil
@@ -57,7 +58,7 @@ function HangmanUI:close()
     self.wrapper.win = nil
   end
   vim.api.nvim_clear_autocmds({
-    event = auto.event,
+    event = "User",
     group = auto.augroups.ui,
   })
   self.guy:close_window()
@@ -95,7 +96,7 @@ function HangmanUI:create_window(game)
   self.word:create_window(game, col + 1, row + 9)
   self.letters:create_window(game, col + 1, row + 12)
 
-  vim.api.nvim_create_autocmd(auto.event, {
+  vim.api.nvim_create_autocmd("User", {
     group = auto.augroups.ui,
     pattern = "hangman",
     callback = function(e)

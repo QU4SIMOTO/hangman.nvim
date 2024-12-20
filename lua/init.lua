@@ -1,3 +1,4 @@
+-- TODO remove these
 package.loaded["game"] = nil
 package.loaded["ui"] = nil
 package.loaded["autocmd"] = nil
@@ -36,6 +37,7 @@ vim.api.nvim_create_user_command("Hangman", function()
   hangman:toggleUI()
 end, {})
 
+-- todo remove this
 vim.keymap.set("n", "<leader>t", function()
   hangman:toggleUI()
 end)

@@ -1,4 +1,4 @@
-package.loaded["autocmd"] = nil
+package.loaded["autocmd"] = nil -- TODO remove this
 local auto = require("autocmd")
 
 local states = {
@@ -18,7 +18,7 @@ function HangmanGame:new(settings)
     state = states.running,
   }, self)
 
-  vim.api.nvim_create_autocmd(auto.event, {
+  vim.api.nvim_create_autocmd("User", {
     group = auto.augroups.guess,
     pattern = "hangman",
     callback = function(e)
@@ -44,7 +44,7 @@ function HangmanGame:guess(guess)
 
   self:update_state()
 
-  vim.api.nvim_exec_autocmds(auto.event, {
+  vim.api.nvim_exec_autocmds("User", {
     group = auto.augroups.ui,
     pattern = "hangman",
     data = "update",
