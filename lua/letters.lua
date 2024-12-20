@@ -48,6 +48,18 @@ function HangmanLetters:create_window(game, col, row)
   vim.keymap.set("n", "<CR>", function()
     self:selection()
   end, { buffer = self.buf })
+
+  vim.api.nvim_create_autocmd("BufLeave", {
+    buffer = self.buf,
+    callback = function()
+      vim.api.nvim_exec_autocmds(auto.event, {
+        group = auto.augroups.ui,
+        pattern = "hangman",
+        data = "close",
+      })
+      print("buffer left")
+    end,
+  })
 end
 
 function HangmanLetters:selection()

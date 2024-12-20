@@ -18,7 +18,7 @@ function HangmanWord:render(game)
       return "_"
     end
   end, vim.split(game.word, ""))
-  local offset = string.len(game.word)
+  local offset = string.len(game.word) - 1
   local line = string.rep(" ", offset) .. vim.iter(chars):join(" ")
   vim.api.nvim_buf_set_lines(self.buf, 0, 1, false, { line })
   vim.api.nvim_set_option_value("modifiable", false, { buf = self.buf })

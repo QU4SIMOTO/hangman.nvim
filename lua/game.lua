@@ -45,8 +45,9 @@ function HangmanGame:guess(guess)
   self:update_state()
 
   vim.api.nvim_exec_autocmds(auto.event, {
-    group = auto.augroups.game_update,
+    group = auto.augroups.ui,
     pattern = "hangman",
+    data = "update",
   })
 end
 

@@ -58,7 +58,7 @@ function HangmanUI:close()
   end
   vim.api.nvim_clear_autocmds({
     event = auto.event,
-    group = auto.augroups.game_update,
+    group = auto.augroups.ui,
   })
   self.guy:close_window()
   self.word:close_window()
@@ -96,10 +96,14 @@ function HangmanUI:create_window(game)
   self.letters:create_window(game, col + 1, row + 12)
 
   vim.api.nvim_create_autocmd(auto.event, {
-    group = auto.augroups.game_update,
+    group = auto.augroups.ui,
     pattern = "hangman",
-    callback = function()
-      self:update(game)
+    callback = function(e)
+      if e.data == "update" then
+        self:update(game)
+      elseif e.data == "close" then
+        self:close()
+      end
     end,
   })
 end

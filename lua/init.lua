@@ -15,7 +15,7 @@ function Hangman:new()
     }),
     ui = Ui:new({
       relative = "editor",
-      width = 30,
+      width = 27,
       height = 15,
       border = "rounded",
       style = "minimal",
