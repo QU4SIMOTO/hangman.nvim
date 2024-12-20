@@ -1,3 +1,4 @@
+local image_cols = 6
 local images = {
   {
     " +---+",
@@ -113,7 +114,7 @@ end
 
 function HangmanGuy:create_window(game, col, row)
   self.buf = vim.api.nvim_create_buf(false, true)
-  self.offset = math.floor(self.settings.win.width / 2) - 5
+  self.offset = math.floor(self.settings.win.width / 2) - (image_cols / 2)
   self:render(game)
   local window_config = vim.tbl_extend("force", self.settings.win, { col = col, row = row })
   self.win = vim.api.nvim_open_win(self.buf, false, window_config)

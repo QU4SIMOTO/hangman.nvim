@@ -13,9 +13,8 @@ end
 function HangmanLetters:render(game)
   vim.api.nvim_set_option_value("modifiable", true, { buf = self.buf, })
   local lines = {
-    "A B C D E F G H I J",
-    "K L M N O P Q R S T",
-    "U V W X Y Z"
+    "A B C D E F G H I J K L M",
+    "N O P Q R S T U V W X Y Z",
   }
   vim.api.nvim_buf_set_lines(self.buf, 0, 3, false, lines)
   for i, line in ipairs(lines) do

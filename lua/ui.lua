@@ -41,7 +41,7 @@ function HangmanUI:new(settings)
       win = {
         relative = "editor",
         width = settings.width - 2,
-        height = 7,
+        height = 2,
         style = "minimal",
         border = "rounded",
         zindex = 200,

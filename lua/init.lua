@@ -12,13 +12,12 @@ Hangman.__index = Hangman
 function Hangman:new()
   return setmetatable({
     game = Game:new({
-      word = "COUCH",
-
+      word = "HANGMAN"
     }),
     ui = Ui:new({
       relative = "editor",
-      width = 50,
-      height = 20,
+      width = 30,
+      height = 15,
       border = "rounded",
       style = "minimal",
       zindex = 100,
