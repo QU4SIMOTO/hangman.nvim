@@ -1,4 +1,3 @@
-
 package.loaded["game"] = nil
 package.loaded["ui"] = nil
 package.loaded["autocmd"] = nil
@@ -40,3 +39,4 @@ end, {})
 vim.keymap.set("n", "<leader>t", function()
   hangman:toggleUI()
 end)
+

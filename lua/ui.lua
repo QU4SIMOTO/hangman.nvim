@@ -6,6 +6,7 @@ package.loaded["autocmd"] = nil
 local Guy = require("guy")
 local Word = require("word")
 local Letters = require("letters")
+local auto = require("autocmd")
 
 local HangmanUI = {}
 HangmanUI.__index = HangmanUI
@@ -55,7 +56,10 @@ function HangmanUI:close()
     vim.api.nvim_win_hide(self.wrapper.win)
     self.wrapper.win = nil
   end
-  vim.api.nvim_clear_autocmds({ event = require"autocmd".event_update })
+  vim.api.nvim_clear_autocmds({
+    event = auto.event,
+    group = auto.augroups.game_update,
+  })
   self.guy:close_window()
   self.word:close_window()
   self.letters:close_window()
@@ -73,6 +77,7 @@ function HangmanUI:create_window(game)
   local row = math.floor((vim.o.lines - self.settings.height) / 2)
 
   self.wrapper.buf = self.wrapper.buf or vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_set_option_value("filetype", "hangman", { buf = self.wrapper.buf })
 
   vim.api.nvim_set_option_value("modifiable", false, { buf = self.wrapper.buf, })
   local win_config = vim.tbl_extend("force", self.settings, {
@@ -86,7 +91,9 @@ function HangmanUI:create_window(game)
   self.word:create_window(game, col + 1, row + 9)
   self.letters:create_window(game, col + 1, row + 12)
 
-  vim.api.nvim_create_autocmd(require"autocmd".event_update, {
+  vim.api.nvim_create_autocmd(auto.event, {
+    group = auto.augroups.game_update,
+    pattern = "hangman",
     callback = function()
       self:update(game)
     end

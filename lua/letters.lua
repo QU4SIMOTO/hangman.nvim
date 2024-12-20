@@ -1,3 +1,5 @@
+local auto = require("autocmd")
+
 local HangmanLetters = {}
 HangmanLetters.__index = HangmanLetters
 
@@ -29,22 +31,32 @@ end
 
 function HangmanLetters:create_window(game, col, row)
   self.buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_set_option_value("filetype", "hangman", { buf = self.buf })
   self:render(game)
 
   local window_config = vim.tbl_extend("force", self.settings.win, { col = col, row = row })
   self.win = vim.api.nvim_open_win(self.buf, true, window_config)
 
   vim.keymap.set("n", "<CR>", function()
-    self:selection(game)
+    self:selection()
   end, { buffer = self.buf })
 end
 
-function HangmanLetters:selection(game)
-    local pos = vim.api.nvim_win_get_cursor(self.win)
-    local line = vim.api.nvim_buf_get_lines(self.buf, pos[1] - 1, pos[1], false)[1]
-    local c = string.sub(line, pos[2] + 1, pos[2] + 1)
-    if c == " " then return end
-    game:guess(c)
+
+function HangmanLetters:selection()
+  local pos = vim.api.nvim_win_get_cursor(self.win)
+  local line = vim.api.nvim_buf_get_lines(self.buf, pos[1] - 1, pos[1], false)[1]
+  local c = string.sub(line, pos[2] + 1, pos[2] + 1)
+
+  if c == " " then
+    return
+  end
+
+  vim.api.nvim_exec_autocmds(auto.event, {
+    group = auto.augroups.guess,
+    pattern = "hangman",
+    data = { guess = c }
+  })
 end
 
 function HangmanLetters:close_window()

@@ -26,6 +26,7 @@ end
 
 function HangmanWord:create_window(game, col, row)
   self.buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_set_option_value("filetype", "hangman", { buf = self.buf })
   self:render(game)
   local window_config = vim.tbl_extend("force", self.settings.win, { col = col, row = row })
   self.win = vim.api.nvim_open_win(self.buf, false, window_config)

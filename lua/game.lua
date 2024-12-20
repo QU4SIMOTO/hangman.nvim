@@ -11,12 +11,21 @@ local HangmanGame = {}
 HangmanGame.__index = HangmanGame
 
 function HangmanGame:new(settings)
-  return setmetatable({
+  local game = setmetatable({
     guessed = {},
     lives = 10,
     word = settings.word,
     state = states.running,
   }, self)
+
+  vim.api.nvim_create_autocmd(auto.event, {
+    group = auto.augroups.guess,
+    pattern = "hangman",
+    callback = function(e)
+      game:guess(e.data.guess)
+    end
+  })
+  return game
 end
 
 function HangmanGame:guess(guess)
@@ -35,8 +44,11 @@ function HangmanGame:guess(guess)
   end
 
   self:update_state()
-  print(self.state)
-  vim.api.nvim_exec_autocmds(auto.event_update, {})
+
+  vim.api.nvim_exec_autocmds(auto.event, {
+    group = auto.augroups.game_update,
+    pattern = "hangman"
+  })
 end
 
 function HangmanGame:update_state()
@@ -46,6 +58,7 @@ function HangmanGame:update_state()
 
   if self.lives == 0 then
     self.state = states.lost
+    print("You lost")
   end
 
   local is_complete =
@@ -56,6 +69,7 @@ function HangmanGame:update_state()
 
   if is_complete then
     self.state = states.won
+    print("You won")
   end
 end
 
