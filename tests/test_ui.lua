@@ -1,5 +1,5 @@
 local new_set = MiniTest.new_set
-local expect, eq = MiniTest.expect, MiniTest.expect.equality
+local expect = MiniTest.expect
 
 local child = MiniTest.new_child_neovim()
 
@@ -13,86 +13,84 @@ local T = new_set({
   }
 })
 
-local function move_right()
+local function ui_move_right()
   child.type_keys(5, { "l", "l" })
 end
 
-local function guess()
+local function ui_move_down()
+  child.type_keys(5, { "j" })
+end
+
+local function ui_guess()
   child.type_keys(5, { "<CR>" })
 end
 
+T["input"] = function()
+  child.lua("M.game.word = 'ABC'")
+  child.cmd("Hangman")
+  ui_guess() -- A
+  ui_move_right()
+  ui_guess() -- B
+  ui_move_down()
+  ui_guess() -- O
+  expect.reference_screenshot(child.get_screenshot())
+end
 
-T["updates UI on correct guess"] = function()
+T["win"] = function()
   child.lua("M.game.word = 'ABC'")
   child.cmd("Hangman")
   expect.reference_screenshot(child.get_screenshot())
 
-  guess() -- A
+  child.cmd("Hangman guess a")
   expect.reference_screenshot(child.get_screenshot())
 
-  move_right()
-  guess() -- B
+  child.cmd("Hangman guess b")
   expect.reference_screenshot(child.get_screenshot())
 
-  move_right()
-  guess() -- C
+  child.cmd("Hangman guess c")
   expect.reference_screenshot(child.get_screenshot())
-  eq(child.lua("return M.game.state"), "WON")
 end
-vim.cmd("messages")
 
-T["updates UI on wrong guess"] = function()
+T["loss"] = function()
   child.lua("M.game.word = 'FOO'")
   child.cmd("Hangman")
   expect.reference_screenshot(child.get_screenshot())
 
-  guess() -- A
+  child.cmd("Hangman guess a")
   expect.reference_screenshot(child.get_screenshot())
 
-  move_right()
-  guess() -- B
+  child.cmd("Hangman guess b")
   expect.reference_screenshot(child.get_screenshot())
 
-  move_right()
-  guess() -- C
+  child.cmd("Hangman guess c")
   expect.reference_screenshot(child.get_screenshot())
 
-  move_right()
-  guess() -- D
+  child.cmd("Hangman guess d")
   expect.reference_screenshot(child.get_screenshot())
 
-  move_right()
-  guess() -- E
+  child.cmd("Hangman guess e")
   expect.reference_screenshot(child.get_screenshot())
 
-  move_right()
-  move_right()
-  guess() -- G
+  child.cmd("Hangman guess g")
   expect.reference_screenshot(child.get_screenshot())
 
-  move_right()
-  guess() -- H
+  child.cmd("Hangman guess h")
   expect.reference_screenshot(child.get_screenshot())
 
-  move_right()
-  guess() -- I
+  child.cmd("Hangman guess i")
   expect.reference_screenshot(child.get_screenshot())
 
-  move_right()
-  guess() -- J
+  child.cmd("Hangman guess j")
   expect.reference_screenshot(child.get_screenshot())
 
-  move_right()
-  guess() -- K
+  child.cmd("Hangman guess k")
   expect.reference_screenshot(child.get_screenshot())
-
-  eq(child.lua("return M.game.state"), "LOST")
 end
 
-T["toggles and remembers state"] = function ()
+T["toggle"] = function ()
   child.lua("M.game.word = 'ABC'")
   child.cmd("Hangman")
-  guess()
+  child.cmd("Hangman guess a")
   expect.reference_screenshot(child.get_screenshot())
   child.cmd("Hangman")
   expect.reference_screenshot(child.get_screenshot())

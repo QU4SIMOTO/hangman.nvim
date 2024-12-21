@@ -5,7 +5,7 @@ local default_key = "toggle"
 
 ---@class HangmanSubcommand
 ---@field impl fun(args:string[], opts: table) The command implementation
----@field complete? fun(subcmd_arg_lead: string): string[] (optional) Command completions callback, taking the lead of the subcommand's arguments
+---@field complete? fun(subcmd_arg_lead: string): string[] (optional) Command completions callback
 
 ---@type table<string, HangmanSubcommand>
 M.subcommand_tbl = {
@@ -27,7 +27,10 @@ M.subcommand_tbl = {
 
       local c = args[1]
       if #c ~= 1 then
-        vim.notify("Hangman guess: invalid guess must be a single char", vim.log.levels.ERROR)
+        vim.notify(
+          "Hangman guess: invalid guess must be a single char",
+          vim.log.levels.ERROR
+        )
         return
       end
       if c:match("%A") then
@@ -35,13 +38,13 @@ M.subcommand_tbl = {
         return
       end
       hangman:guess(c:upper())
-    end
+    end,
   },
   new = {
     impl = function()
       hangman:new_game()
-    end
-  }
+    end,
+  },
 }
 
 ---@param opts table :h lua-guide-commands-create
@@ -51,7 +54,10 @@ M.cmd = function(opts)
   local args = #fargs > 1 and vim.list_slice(fargs, 2, #fargs) or {}
   local subcommand = M.subcommand_tbl[subcommand_key]
   if not subcommand then
-    vim.notify("Hangman: Unknown command: " .. subcommand_key, vim.log.levels.ERROR)
+    vim.notify(
+      "Hangman: Unknown command: " .. subcommand_key,
+      vim.log.levels.ERROR
+    )
     return
   end
   subcommand.impl(args, opts)
