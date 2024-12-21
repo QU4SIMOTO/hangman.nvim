@@ -1,6 +1,6 @@
 local Guy = require("hangman.guy")
 local Word = require("hangman.word")
-local Letters = require("hangman.letters")
+local Input = require("hangman.input")
 local auto = require("hangman.autocmd")
 
 local HangmanUI = {}
@@ -33,7 +33,7 @@ function HangmanUI:new(settings)
         zindex = 200,
       },
     }),
-    letters = Letters:new({
+    input = Input:new({
       win = {
         relative = "editor",
         width = settings.width - 2,
@@ -57,7 +57,7 @@ function HangmanUI:close()
   })
   self.guy:close_window()
   self.word:close_window()
-  self.letters:close_window()
+  self.input:close_window()
 end
 
 function HangmanUI:open(game)
@@ -88,7 +88,7 @@ function HangmanUI:create_window(game)
 
   self.guy:create_window(game, col + 1, row + 1)
   self.word:create_window(game, col + 1, row + 9)
-  self.letters:create_window(game, col + 1, row + 12)
+  self.input:create_window(game, col + 1, row + 12)
 
   vim.api.nvim_create_autocmd("User", {
     group = auto.augroups.ui,
@@ -114,7 +114,7 @@ end
 function HangmanUI:update(game)
   self.guy:update(game)
   self.word:update(game)
-  self.letters:update(game)
+  self.input:update(game)
 end
 
 return HangmanUI

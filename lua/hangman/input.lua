@@ -1,9 +1,9 @@
 local auto = require("hangman.autocmd")
 
-local HangmanLetters = {}
-HangmanLetters.__index = HangmanLetters
+local HangmanInput = {}
+HangmanInput.__index = HangmanInput
 
-function HangmanLetters:new(settings)
+function HangmanInput:new(settings)
   return setmetatable({
     win = nil,
     buf = nil,
@@ -12,7 +12,7 @@ function HangmanLetters:new(settings)
   }, self)
 end
 
-function HangmanLetters:render(game)
+function HangmanInput:render(game)
   vim.api.nvim_set_option_value("modifiable", true, { buf = self.buf })
   local lines = {
     "A B C D E F G H I J K L M",
@@ -36,7 +36,7 @@ function HangmanLetters:render(game)
   vim.api.nvim_set_option_value("modifiable", false, { buf = self.buf })
 end
 
-function HangmanLetters:create_window(game, col, row)
+function HangmanInput:create_window(game, col, row)
   self.buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_set_option_value("filetype", "hangman", { buf = self.buf })
   self:render(game)
@@ -61,7 +61,7 @@ function HangmanLetters:create_window(game, col, row)
   })
 end
 
-function HangmanLetters:selection()
+function HangmanInput:selection()
   local pos = vim.api.nvim_win_get_cursor(self.win)
   local line =
     vim.api.nvim_buf_get_lines(self.buf, pos[1] - 1, pos[1], false)[1]
@@ -78,13 +78,13 @@ function HangmanLetters:selection()
   })
 end
 
-function HangmanLetters:close_window()
+function HangmanInput:close_window()
   vim.api.nvim_win_hide(self.win)
   self.win = nil
 end
 
-function HangmanLetters:update(game)
+function HangmanInput:update(game)
   self:render(game)
 end
 
-return HangmanLetters
+return HangmanInput
