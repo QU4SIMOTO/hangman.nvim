@@ -22,15 +22,19 @@ function Hangman:new()
   }, self)
 end
 
-function Hangman:toggleUI()
+function Hangman:toggle_ui()
   self.ui:toggle(self.game)
+end
+
+function Hangman:guess(c)
+  self.game:guess(c)
 end
 
 local hangman = Hangman:new()
 
 -- todo remove this
 vim.keymap.set("n", "<leader>t", function()
-  hangman:toggleUI()
+  hangman:toggle_ui()
 end)
 
 return hangman
