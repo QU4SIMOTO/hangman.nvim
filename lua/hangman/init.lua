@@ -30,6 +30,14 @@ function Hangman:guess(c)
   self.game:guess(c)
 end
 
+function Hangman:new_game()
+  self.game = Game:new({
+    word = "FOOBAR",
+  })
+  self.ui:toggle(self.game)
+  self.ui:toggle(self.game)
+end
+
 local hangman = Hangman:new()
 
 -- todo remove this

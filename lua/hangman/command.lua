@@ -37,9 +37,9 @@ M.subcommand_tbl = {
       hangman:guess(c:upper())
     end
   },
-  restart = {
+  new = {
     impl = function()
-      vim.notify("Hangman: restart not yet implemented", vim.log.levels.ERROR)
+      hangman:new_game()
     end
   }
 }
