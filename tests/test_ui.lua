@@ -87,7 +87,7 @@ T["loss"] = function()
   expect.reference_screenshot(child.get_screenshot())
 end
 
-T["toggle"] = function ()
+T["toggle"] = function()
   child.lua("M.game.word = 'ABC'")
   child.cmd("Hangman")
   child.cmd("Hangman guess a")

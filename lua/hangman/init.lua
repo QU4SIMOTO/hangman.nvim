@@ -6,9 +6,7 @@ Hangman.__index = Hangman
 
 function Hangman:new()
   return setmetatable({
-    game = Game:new({
-      word = "HANGMAN",
-    }),
+    game = Game:new({}),
     ui = Ui:new({
       relative = "editor",
       width = 27,
@@ -31,18 +29,11 @@ function Hangman:guess(c)
 end
 
 function Hangman:new_game()
-  self.game = Game:new({
-    word = "FOOBAR",
-  })
+  self.game = Game:new()
   self.ui:toggle(self.game)
   self.ui:toggle(self.game)
 end
 
 local hangman = Hangman:new()
-
--- todo remove this
-vim.keymap.set("n", "<leader>t", function()
-  hangman:toggle_ui()
-end)
 
 return hangman

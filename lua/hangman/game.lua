@@ -1,4 +1,5 @@
 local auto = require("hangman.autocmd")
+local data = require("hangman.data")
 
 local states = {
   running = "RUNNING",
@@ -9,11 +10,11 @@ local states = {
 local HangmanGame = {}
 HangmanGame.__index = HangmanGame
 
-function HangmanGame:new(settings)
+function HangmanGame:new()
   local game = setmetatable({
     guessed = {},
     lives = 10,
-    word = settings.word,
+    word = data.get_random_word(),
     state = states.running,
   }, self)
 
