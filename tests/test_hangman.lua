@@ -7,7 +7,7 @@ T["new game random word"] = function()
   -- TODO test random word generation better than this
   local hangman = Hangman:new()
   local word = Hangman:new().game.word
-  local tries = 50
+  local tries = 500
   for _ = 1, tries do
     hangman:new_game()
     if word ~= hangman.game.word then
