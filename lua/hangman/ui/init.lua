@@ -1,6 +1,6 @@
-local Guy = require("hangman.guy")
-local Word = require("hangman.word")
-local Input = require("hangman.input")
+local Guy = require("hangman.ui.guy")
+local Word = require("hangman.ui.word")
+local Input = require("hangman.ui.input")
 local auto = require("hangman.autocmd")
 
 local HangmanUI = {}
