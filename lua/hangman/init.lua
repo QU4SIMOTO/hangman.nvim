@@ -1,10 +1,5 @@
--- TODO remove these
-package.loaded["game"] = nil
-package.loaded["ui"] = nil
-package.loaded["autocmd"] = nil
-
-local Ui = require("ui")
-local Game = require("game")
+local Ui = require("hangman.ui")
+local Game = require("hangman.game")
 
 local Hangman = {}
 Hangman.__index = Hangman
@@ -33,11 +28,9 @@ end
 
 local hangman = Hangman:new()
 
-vim.api.nvim_create_user_command("Hangman", function()
-  hangman:toggleUI()
-end, {})
-
 -- todo remove this
 vim.keymap.set("n", "<leader>t", function()
   hangman:toggleUI()
 end)
+
+return hangman

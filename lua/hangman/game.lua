@@ -1,5 +1,4 @@
-package.loaded["autocmd"] = nil -- TODO remove this
-local auto = require("autocmd")
+local auto = require("hangman.autocmd")
 
 local states = {
   running = "RUNNING",

@@ -1,13 +1,7 @@
--- TODO remove these
-package.loaded["guy"] = nil
-package.loaded["word"] = nil
-package.loaded["letters"] = nil
-package.loaded["autocmd"] = nil
-
-local Guy = require("guy")
-local Word = require("word")
-local Letters = require("letters")
-local auto = require("autocmd")
+local Guy = require("hangman.guy")
+local Word = require("hangman.word")
+local Letters = require("hangman.letters")
+local auto = require("hangman.autocmd")
 
 local HangmanUI = {}
 HangmanUI.__index = HangmanUI

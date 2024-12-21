@@ -1,4 +1,4 @@
-local auto = require("autocmd")
+local auto = require("hangman.autocmd")
 
 local HangmanLetters = {}
 HangmanLetters.__index = HangmanLetters
