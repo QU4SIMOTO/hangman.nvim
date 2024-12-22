@@ -1,6 +1,13 @@
+---Target word UI component
+---@class HangmanWord
+---@field win integer?
+---@field buf integer?
+---@field settings any
 local HangmanWord = {}
 HangmanWord.__index = HangmanWord
 
+---@param settings any
+---@return HangmanWord
 function HangmanWord:new(settings)
   return setmetatable({
     win = nil,
@@ -9,6 +16,7 @@ function HangmanWord:new(settings)
   }, self)
 end
 
+---@param game HangmanGame
 function HangmanWord:render(game)
   vim.api.nvim_set_option_value("modifiable", true, { buf = self.buf })
   local chars = vim.tbl_map(function(c)
@@ -24,6 +32,9 @@ function HangmanWord:render(game)
   vim.api.nvim_set_option_value("modifiable", false, { buf = self.buf })
 end
 
+---@param game HangmanGame
+---@param col integer Column position of the window
+---@param row integer Row position of the window
 function HangmanWord:create_window(game, col, row)
   self.buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_set_option_value("filetype", "hangman", { buf = self.buf })
@@ -38,6 +49,7 @@ function HangmanWord:close_window()
   self.win = nil
 end
 
+---@param game HangmanGame
 function HangmanWord:update(game)
   self:render(game)
 end

@@ -1,5 +1,6 @@
 local M = {}
 
+--- @type string[] List of words to guess
 M.words = {
   "ABRUPTLY",
   "ABSURD",
@@ -216,6 +217,8 @@ M.words = {
   "ZOMBIE",
 }
 
+---Get a random word from the words list
+---@return string word
 function M.get_random_word()
   math.randomseed(os.time())
   return M.words[math.random(1, #M.words)]

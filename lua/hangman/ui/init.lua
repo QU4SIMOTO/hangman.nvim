@@ -3,9 +3,22 @@ local Word = require("hangman.ui.word")
 local Input = require("hangman.ui.input")
 local auto = require("hangman.autocmd")
 
+---@class Wrapper
+---@field win integer?
+---@field buf integer?
+
+---Root UI component
+---@class HangmanUI
+---@field settings any
+---@field wrapper Wrapper
+---@field guy HangmanGuy
+---@field word HangmanWord
+---@field input HangmanInput
 local HangmanUI = {}
 HangmanUI.__index = HangmanUI
 
+---@param settings any
+---@return HangmanUI
 function HangmanUI:new(settings)
   return setmetatable({
     settings = settings,
@@ -67,6 +80,7 @@ function HangmanUI:open(game)
   self:create_window(game)
 end
 
+---@param game HangmanGame
 function HangmanUI:create_window(game)
   local col = math.floor((vim.o.columns - self.settings.width) / 2)
   local row = math.floor((vim.o.lines - self.settings.height) / 2)
@@ -103,6 +117,7 @@ function HangmanUI:create_window(game)
   })
 end
 
+---@param game HangmanGame
 function HangmanUI:toggle(game)
   if self.wrapper.win then
     self:close()
@@ -111,6 +126,7 @@ function HangmanUI:toggle(game)
   end
 end
 
+---@param game HangmanGame
 function HangmanUI:update(game)
   self.guy:update(game)
   self.word:update(game)

@@ -1,4 +1,7 @@
+---@type number The width of the ascii hangman image
 local image_cols = 6
+
+---@type string[][] Ascii images of the hangman guy
 local images = {
   {
     " +---+",
@@ -90,9 +93,16 @@ local images = {
   },
 }
 
+---@class HangmanGuy UI component displaying the hangman guy
+---@field win integer?
+---@field buf integer?
+---@field offset integer?
+---@field settings any
 local HangmanGuy = {}
 HangmanGuy.__index = HangmanGuy
 
+---@param settings any
+---@return HangmanGuy
 function HangmanGuy:new(settings)
   return setmetatable({
     win = nil,
@@ -102,6 +112,8 @@ function HangmanGuy:new(settings)
   }, self)
 end
 
+---Render the hangman guy from game state
+---@param game HangmanGame
 function HangmanGuy:render(game)
   vim.api.nvim_set_option_value("modifiable", true, { buf = self.buf })
   local image_id = game.lives > 0 and game.lives + 1 or 1
@@ -115,6 +127,10 @@ function HangmanGuy:render(game)
   vim.api.nvim_set_option_value("modifiable", false, { buf = self.buf })
 end
 
+---Create the component window and render
+---@param game HangmanGame
+---@param col integer Column position of the window
+---@param row integer Row position of the window
 function HangmanGuy:create_window(game, col, row)
   self.buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_set_option_value("filetype", "hangman", { buf = self.buf })
@@ -125,11 +141,14 @@ function HangmanGuy:create_window(game, col, row)
   self.win = vim.api.nvim_open_win(self.buf, false, window_config)
 end
 
+---Close the component window
 function HangmanGuy:close_window()
   vim.api.nvim_win_hide(self.win)
-  self.win = nil
+  self._win = nil
 end
 
+---Update the component
+---@param game HangmanGame
 function HangmanGuy:update(game)
   self:render(game)
 end

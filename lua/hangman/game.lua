@@ -1,21 +1,21 @@
 local auto = require("hangman.autocmd")
 local data = require("hangman.data")
 
-local states = {
-  running = "RUNNING",
-  won = "WON",
-  lost = "LOST",
-}
-
+---@class HangmanGame
+---@field guessed table<string, boolean>
+---@field lives number defaults to 0
+---@field word string
+---@field state "RUNNING"|"WON"|"LOST"
 local HangmanGame = {}
 HangmanGame.__index = HangmanGame
 
+---@return HangmanGame
 function HangmanGame:new()
   local game = setmetatable({
     guessed = {},
     lives = 10,
     word = data.get_random_word(),
-    state = states.running,
+    state = "RUNNING",
   }, self)
 
   vim.api.nvim_create_autocmd("User", {
@@ -28,8 +28,9 @@ function HangmanGame:new()
   return game
 end
 
+---@param guess string The char to guess
 function HangmanGame:guess(guess)
-  if self.guessed[guess] ~= nil or self.state ~= states.running then
+  if self.guessed[guess] ~= nil or self.state ~= "RUNNING" then
     return
   end
   local is_correct = vim.iter(vim.split(self.word, "")):find(function(c)
@@ -42,7 +43,7 @@ function HangmanGame:guess(guess)
     self.lives = self.lives == 0 and 0 or self.lives - 1
   end
 
-  self:update_state()
+  self:_update_state()
 
   vim.api.nvim_exec_autocmds("User", {
     group = auto.augroups.ui,
@@ -51,13 +52,14 @@ function HangmanGame:guess(guess)
   })
 end
 
-function HangmanGame:update_state()
-  if self.state ~= states.running then
+---Update the internal state of the game
+function HangmanGame:_update_state()
+  if self.state ~= "RUNNING" then
     return
   end
 
   if self.lives == 0 then
-    self.state = states.lost
+    self.state = "LOST"
     print("You lost")
   end
 
@@ -68,7 +70,7 @@ function HangmanGame:update_state()
     end)
 
   if is_complete then
-    self.state = states.won
+    self.state = "WON"
     print("You won")
   end
 end
