@@ -1,3 +1,5 @@
+local util = require("hangman.util")
+
 ---Target word UI component
 ---@class HangmanWord
 ---@field win integer?
@@ -26,8 +28,8 @@ function HangmanWord:render(game)
       return "_"
     end
   end, vim.split(game.word, ""))
-  local offset = string.len(game.word) - 1
-  local line = string.rep(" ", offset) .. vim.iter(chars):join(" ")
+  local line =
+    util.pad_and_center(vim.iter(chars):join(" "), self.settings.win.width)
   vim.api.nvim_buf_set_lines(self.buf, 0, 1, false, { line })
   vim.api.nvim_set_option_value("modifiable", false, { buf = self.buf })
 end
