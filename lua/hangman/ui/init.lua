@@ -2,6 +2,7 @@ local Guy = require("hangman.ui.guy")
 local Word = require("hangman.ui.word")
 local Input = require("hangman.ui.input")
 local auto = require("hangman.autocmd")
+local default_settings = require("hangman.settings")
 
 ---@class Wrapper
 ---@field win integer?
@@ -9,7 +10,7 @@ local auto = require("hangman.autocmd")
 
 ---Root UI component
 ---@class HangmanUI
----@field settings any
+---@field settings HangmanUISettings
 ---@field wrapper Wrapper
 ---@field guy HangmanGuy
 ---@field word HangmanWord
@@ -17,7 +18,7 @@ local auto = require("hangman.autocmd")
 local HangmanUI = {}
 HangmanUI.__index = HangmanUI
 
----@param settings any
+---@param settings HangmanUISettings
 ---@return HangmanUI
 function HangmanUI:new(settings)
   return setmetatable({
@@ -26,36 +27,9 @@ function HangmanUI:new(settings)
       win = nil,
       buf = nil,
     },
-    guy = Guy:new({
-      win = {
-        relative = "editor",
-        width = settings.width - 2,
-        height = 6,
-        style = "minimal",
-        border = "rounded",
-        zindex = 200,
-      },
-    }),
-    word = Word:new({
-      win = {
-        relative = "editor",
-        width = settings.width - 2,
-        height = 1,
-        style = "minimal",
-        border = "rounded",
-        zindex = 200,
-      },
-    }),
-    input = Input:new({
-      win = {
-        relative = "editor",
-        width = settings.width - 2,
-        height = 2,
-        style = "minimal",
-        border = "rounded",
-        zindex = 200,
-      },
-    }),
+    guy = Guy:new(default_settings.guy),
+    word = Word:new(default_settings.word),
+    input = Input:new(default_settings.input),
   }, self)
 end
 

@@ -1,5 +1,6 @@
 local Ui = require("hangman.ui")
 local Game = require("hangman.game")
+local default_settings = require("hangman.settings")
 
 ---@class Hangman
 ---@field game HangmanGame
@@ -11,16 +12,7 @@ Hangman.__index = Hangman
 function Hangman:new()
   return setmetatable({
     game = Game:new(),
-    ui = Ui:new({
-      relative = "editor",
-      width = 27,
-      height = 15,
-      border = "rounded",
-      style = "minimal",
-      zindex = 100,
-      title = "Hangman",
-      title_pos = "center",
-    }),
+    ui = Ui:new(default_settings.ui),
   }, self)
 end
 

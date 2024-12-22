@@ -5,11 +5,11 @@ local auto = require("hangman.autocmd")
 ---@field win integer?
 ---@field buf integer
 ---@field ns integer Namespace id for highlights
----@field settings any
+---@field settings HangmanInputSettings
 local HangmanInput = {}
 HangmanInput.__index = HangmanInput
 
----@param settings any
+---@param settings HangmanInputSettings
 ---@return HangmanInput
 function HangmanInput:new(settings)
   return setmetatable({

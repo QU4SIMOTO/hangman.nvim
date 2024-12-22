@@ -1,4 +1,4 @@
----@type number The width of the ascii hangman image
+---@type integer The width of the ascii hangman image
 local image_cols = 6
 
 ---@type string[][] Ascii images of the hangman guy
@@ -97,11 +97,11 @@ local images = {
 ---@field win integer?
 ---@field buf integer?
 ---@field offset integer?
----@field settings any
+---@field settings HangmanGuySettings
 local HangmanGuy = {}
 HangmanGuy.__index = HangmanGuy
 
----@param settings any
+---@param settings HangmanGuySettings
 ---@return HangmanGuy
 function HangmanGuy:new(settings)
   return setmetatable({

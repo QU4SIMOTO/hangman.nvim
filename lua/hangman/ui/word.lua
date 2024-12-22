@@ -4,11 +4,11 @@ local util = require("hangman.util")
 ---@class HangmanWord
 ---@field win integer?
 ---@field buf integer?
----@field settings any
+---@field settings HangmanWordSettings
 local HangmanWord = {}
 HangmanWord.__index = HangmanWord
 
----@param settings any
+---@param settings HangmanWordSettings
 ---@return HangmanWord
 function HangmanWord:new(settings)
   return setmetatable({
