@@ -10,7 +10,14 @@ local default_key = "toggle"
 ---@type table<string, HangmanSubcommand>
 M.subcommand_tbl = {
   toggle = {
-    impl = function()
+    impl = function(args)
+      if #args > 0 then
+        vim.notify(
+          "Hangman toggle: command does not accept arguments",
+          vim.log.levels.ERROR
+        )
+        return
+      end
       hangman:toggle_ui()
     end,
   },
@@ -41,7 +48,14 @@ M.subcommand_tbl = {
     end,
   },
   new = {
-    impl = function()
+    impl = function(args)
+      if #args > 0 then
+        vim.notify(
+          "Hangman toggle: command does not accept arguments",
+          vim.log.levels.ERROR
+        )
+        return
+      end
       hangman:new_game()
     end,
   },
