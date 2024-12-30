@@ -1,5 +1,3 @@
-local hangman = require("hangman")
-
 local M = {}
 local default_key = "toggle"
 
@@ -18,7 +16,7 @@ M.subcommand_tbl = {
         )
         return
       end
-      hangman:toggle_ui()
+      require("hangman"):toggle_ui()
     end,
   },
   guess = {
@@ -44,7 +42,7 @@ M.subcommand_tbl = {
         vim.notify("Hangman guess: guess must be a char", vim.log.levels.ERROR)
         return
       end
-      hangman:guess(c:upper())
+      require("hangman"):guess(c:upper())
     end,
   },
   new = {
@@ -56,7 +54,7 @@ M.subcommand_tbl = {
         )
         return
       end
-      hangman:new_game()
+      require("hangman"):new_game()
     end,
   },
 }
