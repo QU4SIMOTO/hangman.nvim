@@ -40,9 +40,9 @@ M.word = {
   },
 }
 
----@class HangmanGuySettings
+---@class HangmanFigureSettings
 ---@field win vim.api.keyset.win_config
-M.guy = {
+M.figure = {
   win = {
     relative = "editor",
     width = M.ui.width - 2,

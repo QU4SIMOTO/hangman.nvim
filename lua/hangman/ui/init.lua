@@ -1,4 +1,4 @@
-local Guy = require("hangman.ui.guy")
+local Figure = require("hangman.ui.figure")
 local Word = require("hangman.ui.word")
 local Input = require("hangman.ui.input")
 local auto = require("hangman.autocmd")
@@ -12,7 +12,7 @@ local default_settings = require("hangman.settings")
 ---@class HangmanUI
 ---@field settings HangmanUISettings
 ---@field wrapper Wrapper
----@field guy HangmanGuy
+---@field figure HangmanFigure
 ---@field word HangmanWord
 ---@field input HangmanInput
 local HangmanUI = {}
@@ -27,7 +27,7 @@ function HangmanUI:new(settings)
       win = nil,
       buf = nil,
     },
-    guy = Guy:new(default_settings.guy),
+    figure = Figure:new(default_settings.figure),
     word = Word:new(default_settings.word),
     input = Input:new(default_settings.input),
   }, self)
@@ -42,7 +42,7 @@ function HangmanUI:close()
     event = "User",
     group = auto.augroups.ui,
   })
-  self.guy:close_window()
+  self.figure:close_window()
   self.word:close_window()
   self.input:close_window()
 end
@@ -74,7 +74,7 @@ function HangmanUI:create_window(game)
   })
   self.wrapper.win = vim.api.nvim_open_win(self.wrapper.buf, false, win_config)
 
-  self.guy:create_window(game, col + 1, row + 1)
+  self.figure:create_window(game, col + 1, row + 1)
   self.word:create_window(game, col + 1, row + 9)
   self.input:create_window(game, col + 1, row + 12)
 
@@ -102,7 +102,7 @@ end
 
 ---@param game HangmanGame
 function HangmanUI:update(game)
-  self.guy:update(game)
+  self.figure:update(game)
   self.word:update(game)
   self.input:update(game)
 end

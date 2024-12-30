@@ -1,6 +1,6 @@
 local util = require("hangman.util")
 
----@type string[][] Ascii images of the hangman guy
+---@type string[][] Ascii images of the hangman figure
 local images = {
   {
     " +---+",
@@ -92,16 +92,16 @@ local images = {
   },
 }
 
----@class HangmanGuy UI component displaying the hangman guy
+---@class HangmanFigure UI component displaying the hangman figure
 ---@field win integer?
 ---@field buf integer?
----@field settings HangmanGuySettings
-local HangmanGuy = {}
-HangmanGuy.__index = HangmanGuy
+---@field settings HangmanFigureSettings
+local HangmanFigure = {}
+HangmanFigure.__index = HangmanFigure
 
----@param settings HangmanGuySettings
----@return HangmanGuy
-function HangmanGuy:new(settings)
+---@param settings HangmanFigureSettings
+---@return HangmanFigure
+function HangmanFigure:new(settings)
   return setmetatable({
     win = nil,
     buf = nil,
@@ -109,9 +109,9 @@ function HangmanGuy:new(settings)
   }, self)
 end
 
----Render the hangman guy from game state
+---Render the hangman figure from game state
 ---@param game HangmanGame
-function HangmanGuy:render(game)
+function HangmanFigure:render(game)
   vim.api.nvim_set_option_value("modifiable", true, { buf = self.buf })
   local image_id = game.lives > 0 and game.lives + 1 or 1
   local lines = vim
@@ -128,7 +128,7 @@ end
 ---@param game HangmanGame
 ---@param col integer Column position of the window
 ---@param row integer Row position of the window
-function HangmanGuy:create_window(game, col, row)
+function HangmanFigure:create_window(game, col, row)
   self.buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_set_option_value("filetype", "hangman", { buf = self.buf })
   self:render(game)
@@ -138,15 +138,15 @@ function HangmanGuy:create_window(game, col, row)
 end
 
 ---Close the component window
-function HangmanGuy:close_window()
+function HangmanFigure:close_window()
   vim.api.nvim_win_hide(self.win)
   self._win = nil
 end
 
 ---Update the component
 ---@param game HangmanGame
-function HangmanGuy:update(game)
+function HangmanFigure:update(game)
   self:render(game)
 end
 
-return HangmanGuy
+return HangmanFigure
