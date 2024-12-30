@@ -102,3 +102,5 @@ MIT
 
 ## TODO
 - add help page
+- add healtcheck
+- support guessing full word
